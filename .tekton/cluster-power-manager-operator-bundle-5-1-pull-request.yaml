@@ -19,12 +19,13 @@ metadata:
         '.konflux/overlay/***'.pathChanged() ||
         '.tekton/build-pipeline.yaml'.pathChanged() ||
         '.tekton/cluster-power-manager-operator-bundle-5-1-pull-request.yaml'.pathChanged() ||
+        '.tekton/cluster-power-manager-operator-bundle-5-1-push.yaml'.pathChanged() ||
         'bundle/***'.pathChanged() ||
         'config/***'.pathChanged() ||
+        '.gitmodules'.pathChanged() ||
         'telco5g-konflux'.pathChanged() ||
         'telco5g-konflux/***'.pathChanged()
       )
-  creationTimestamp: null
   labels:
     appstudio.openshift.io/application: cluster-power-manager-5-1
     appstudio.openshift.io/component: cluster-power-manager-operator-bundle-5-1
@@ -75,4 +76,3 @@ spec:
     - name: git-auth
       secret:
         secretName: '{{ git_auth_secret }}'
-status: {}

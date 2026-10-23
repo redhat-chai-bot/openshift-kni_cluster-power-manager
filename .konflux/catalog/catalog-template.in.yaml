@@ -25,6 +25,6 @@ entries:
     package: cluster-power-manager
     schema: olm.channel
   # v5.1.0 bundle
-  # The url for this last entry is updated by telco5g-konflux/scripts/catalog/update-catalog-template.sh automatically
-  - image: placeholder.will.be.updated.by.telco5g-konflux.scripts.catalog.update-catalog-template.sh
+  # The URL for this entry is updated by telco5g-konflux/scripts/catalog/konflux-update-catalog-template.sh
+  - image: placeholder.will.be.updated.by.telco5g-konflux.scripts.catalog.konflux-update-catalog-template.sh
     schema: olm.bundle

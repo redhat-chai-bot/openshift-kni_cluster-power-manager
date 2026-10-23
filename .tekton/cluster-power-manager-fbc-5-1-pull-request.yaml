@@ -20,10 +20,11 @@ metadata:
         '.tekton/fbc-pipeline.yaml'.pathChanged() ||
         '.tekton/images-mirror-set.yaml'.pathChanged() ||
         '.tekton/cluster-power-manager-fbc-5-1-pull-request.yaml'.pathChanged() ||
+        '.tekton/cluster-power-manager-fbc-5-1-push.yaml'.pathChanged() ||
+        '.gitmodules'.pathChanged() ||
         'telco5g-konflux'.pathChanged() ||
         'telco5g-konflux/***'.pathChanged()
       )
-  creationTimestamp: null
   labels:
     appstudio.openshift.io/application: cluster-power-manager-fbc-5-1
     appstudio.openshift.io/component: cluster-power-manager-fbc-5-1
@@ -40,8 +41,8 @@ spec:
       value: quay.io/redhat-user-workloads/telco-5g-tenant/cluster-power-manager-fbc-5-1:on-pr-{{revision}}
     - name: image-expires-after
       value: 5d
-      # FBCs are not required to be multi arch because IIB will generate multi arch images on release.
-      # However we still need to build multi arch images for QE to test pre-release.
+    # FBCs are not required to be multi arch because IIB will generate multi arch images on release.
+    # However we still need to build multi arch images for QE to test pre-release.
     - name: build-platforms
       value:
         - linux/x86_64
@@ -62,4 +63,3 @@ spec:
     - name: git-auth
       secret:
         secretName: '{{ git_auth_secret }}'
-status: {}

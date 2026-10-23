@@ -30,7 +30,6 @@ metadata:
         'telco5g-konflux/***'.pathChanged() ||
         'vendor/***'.pathChanged()
       )
-  creationTimestamp: null
   labels:
     appstudio.openshift.io/application: cluster-power-manager-5-1
     appstudio.openshift.io/component: cluster-power-manager-controller-5-1
@@ -55,8 +54,6 @@ spec:
       value: .konflux/container_build_args.conf
     - name: hermetic
       value: "true"
-    - name: dev-package-managers
-      value: "true"
     - name: prefetch-input
       value: '[{"type": "gomod", "path": "."}]'
     - name: build-source-image
@@ -77,4 +74,3 @@ spec:
     - name: git-auth
       secret:
         secretName: '{{ git_auth_secret }}'
-status: {}

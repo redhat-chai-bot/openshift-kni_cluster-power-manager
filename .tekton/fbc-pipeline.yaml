@@ -6,7 +6,7 @@ spec:
   description: |
     This pipeline is ideal for building and verifying [file-based catalogs](https://konflux-ci.dev/docs/end-to-end/building-olm/#building-the-file-based-catalog).
     _Uses `buildah` to create a container image. Its build-time tests are limited to verifying the included catalog and do not scan the image.
-    This pipeline is pushed as a Tekton bundle to [quay.io](https://quay.io/repository/konflux-ci/tekton-catalog/pipeline-fbc-builder?tab=tags)_
+    This local pipeline is based on the [Konflux FBC builder pipeline](https://quay.io/repository/konflux-ci/tekton-catalog/pipeline-fbc-builder?tab=tags)._
   params:
   - description: Source Repository URL
     name: git-url
@@ -41,10 +41,6 @@ spec:
   - default: ''
     description: Image tag expiration time, time values could be something like 1h, 2d, 3w for hours, days, and weeks, respectively.
     name: image-expires-after
-  - default: 'false'
-    description: Build a source image.
-    name: build-source-image
-    type: string
   - default: 'true'
     description: Add built image into an OCI image index
     name: build-image-index
@@ -142,7 +138,7 @@ spec:
       value: $(params.image-expires-after)
     - name: SCRIPT_RUNNER_IMAGE
       value: quay.io/konflux-ci/yq:latest
-        # update catalog template
+    # Update catalog template
     - name: SCRIPT
       value: ./telco5g-konflux/scripts/catalog/konflux-update-catalog-template.sh --set-catalog-template-input-file .konflux/catalog/catalog-template.in.yaml --set-bundle-builds-file .konflux/catalog/bundle.builds.in.yaml
     - name: HERMETIC
@@ -173,12 +169,12 @@ spec:
       - alpha
       - render-template
       - basic
-            # arg for OCP 4.17 and newer
+      # Argument for OCP 4.17 and newer
       - "--migrate-level=bundle-object-to-csv-metadata"
       - ".konflux/catalog/catalog-template.in.yaml"
     - name: OPM_OUTPUT_PATH
       value: ".konflux/catalog/cluster-power-manager/catalog.json"
-        # replace catalog.json pullspecs with idms config
+    # Replace catalog.json pullspecs with IDMS config
     - name: IDMS_PATH
       value: ".konflux/catalog/catalog-idms.yaml"
     - name: FILE_TO_UPDATE_PULLSPEC
@@ -268,7 +264,7 @@ spec:
     - name: OMIT_HISTORY
       value: $(params.omit-history)
     runAfter:
-    - clone-repository
+    - prefetch-dependencies
     taskRef:
       params:
       - name: name

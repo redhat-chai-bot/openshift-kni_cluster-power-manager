@@ -7,7 +7,7 @@ spec:
     This pipeline is ideal for building multi-arch container images from a Containerfile while maintaining trust after pipeline customization.
 
     _Uses `buildah` to create a multi-platform container image leveraging [trusted artifacts](https://konflux-ci.dev/architecture/ADR/0036-trusted-artifacts.html). It also optionally creates a source image and runs some build-time tests. This pipeline requires that the [multi platform controller](https://github.com/konflux-ci/multi-platform-controller) is deployed and configured on your Konflux instance. Information is shared between tasks using OCI artifacts instead of PVCs. EC will pass the [`trusted_task.trusted`](https://enterprisecontract.dev/docs/ec-policies/release_policy.html#trusted_task__trusted) policy as long as all data used to build the artifact is generated from trusted tasks.
-    This pipeline is pushed as a Tekton bundle to [quay.io](https://quay.io/repository/konflux-ci/tekton-catalog/pipeline-docker-build-multi-platform-oci-ta?tab=tags)_
+    This local pipeline is based on the [Konflux multi-platform build pipeline](https://quay.io/repository/konflux-ci/tekton-catalog/pipeline-docker-build-multi-platform-oci-ta?tab=tags)._
   params:
     - description: Source Repository URL
       name: git-url
@@ -46,10 +46,6 @@ spec:
     - default: ''
       description: Build dependencies to be prefetched by Cachi2
       name: prefetch-input
-      type: string
-    - default: 'false'
-      description: Enable dev-package-manager within prefetching task
-      name: dev-package-managers
       type: string
     - default: ''
       description: Image tag expiration time, time values could be something like 1h, 2d, 3w for hours, days, and weeks, respectively.
@@ -200,8 +196,6 @@ spec:
           value: $(params.output-image).prefetch
         - name: ociArtifactExpiresAfter
           value: $(params.image-expires-after)
-        - name: dev-package-managers
-          value: $(params.dev-package-managers)
         - name: enable-package-registry-proxy
           value: $(params.enable-package-registry-proxy)
       runAfter:
@@ -362,12 +356,7 @@ spec:
           operator: in
           values:
             - 'false'
-    - matrix:
-        params:
-          - name: image-platform
-            value:
-              - $(params.build-platforms)
-      name: roxctl-scan
+    - name: roxctl-scan
       params:
         - name: image-digest
           value: $(tasks.build-image-index.results.IMAGE_DIGEST)
@@ -421,8 +410,6 @@ spec:
           value: $(tasks.build-image-index.results.IMAGE_URL)
         - name: SOURCE_ARTIFACT
           value: $(tasks.prefetch-dependencies.results.SOURCE_ARTIFACT)
-        - name: CACHI2_ARTIFACT
-          value: $(tasks.prefetch-dependencies.results.CACHI2_ARTIFACT)
         - name: TARGET_DIRS
           value: $(params.sast-target-dirs)
       runAfter:
@@ -554,8 +541,6 @@ spec:
           value: $(tasks.build-image-index.results.IMAGE_URL)
         - name: SOURCE_ARTIFACT
           value: $(tasks.prefetch-dependencies.results.SOURCE_ARTIFACT)
-        - name: CACHI2_ARTIFACT
-          value: $(tasks.prefetch-dependencies.results.CACHI2_ARTIFACT)
         - name: TARGET_DIRS
           value: $(params.sast-target-dirs)
       runAfter:
@@ -582,8 +567,6 @@ spec:
           value: $(tasks.build-image-index.results.IMAGE_URL)
         - name: SOURCE_ARTIFACT
           value: $(tasks.prefetch-dependencies.results.SOURCE_ARTIFACT)
-        - name: CACHI2_ARTIFACT
-          value: $(tasks.prefetch-dependencies.results.CACHI2_ARTIFACT)
         - name: TARGET_DIRS
           value: $(params.sast-target-dirs)
       runAfter:
