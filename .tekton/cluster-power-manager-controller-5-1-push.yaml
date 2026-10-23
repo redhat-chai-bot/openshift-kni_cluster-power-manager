@@ -16,6 +16,7 @@ metadata:
         '.konflux/container_build_args.conf'.pathChanged() ||
         '.tekton/build-pipeline.yaml'.pathChanged() ||
         '.tekton/cluster-power-manager-controller-5-1-push.yaml'.pathChanged() ||
+        'LICENSE'.pathChanged() ||
         'api/***'.pathChanged() ||
         'build/Dockerfile'.pathChanged() ||
         'build/manager/***'.pathChanged() ||

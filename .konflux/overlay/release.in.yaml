@@ -1,5 +1,7 @@
 ---
 variables:
+  annotations: |
+    features.operators.openshift.io/fips-compliant: "true"
   # PLACEHOLDER_ variables will be substituted by ad-hoc overlay logic
   containerImage: PLACEHOLDER_CONTAINER_IMAGE
   description: |

@@ -17,6 +17,7 @@ metadata:
         '.tekton/build-pipeline.yaml'.pathChanged() ||
         '.tekton/cluster-power-manager-node-agent-5-1-pull-request.yaml'.pathChanged() ||
         '.tekton/cluster-power-manager-node-agent-5-1-push.yaml'.pathChanged() ||
+        'LICENSE'.pathChanged() ||
         'api/***'.pathChanged() ||
         'build/Dockerfile.nodeagent'.pathChanged() ||
         'build/nodeagent/***'.pathChanged() ||
